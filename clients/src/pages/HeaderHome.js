@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
 const HeaderHome = () => {
@@ -15,6 +15,30 @@ const HeaderHome = () => {
         }).toString(),
       });
     }
+  };
+
+  const [loggedIn, setLoggedIn] = useState(false); // State để kiểm tra đăng nhập
+  const [user, setUser] = useState(null); // State để lưu thông tin người dùng
+  useEffect(() => {
+    // Kiểm tra xem có thông tin người dùng trong localStorage không
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      // Nếu có, cập nhật state loggedIn và user
+      const parsedUserData = JSON.parse(userData);
+      setLoggedIn(true);
+      setUser(parsedUserData.user);
+    }
+    console.log(user);
+  }, []);
+  // Hàm đăng xuất
+  const handleLogout = () => {
+    // Xử lý đăng xuất ở đây (ví dụ: xóa thông tin người dùng khỏi localStorage và đặt state loggedIn và user về giá trị mặc định)
+    localStorage.removeItem("user");
+    setLoggedIn(false);
+    setUser(null);
+    window.location.href = "/";
+    // Sau khi đăng xuất, chuyển hướng về trang chủ hoặc trang khác tùy ý
+    // window.location.href = "/"; // Thay đổi "/"" thành đường dẫn mong muốn
   };
   return (
     <div>
@@ -55,11 +79,6 @@ const HeaderHome = () => {
                     </a>
                     <ul className="sub-menu">
                       {" "}
-                      <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29">
-                        <a href="/list" itemProp="url">
-                          Danh lục cây thuốc
-                        </a>
-                      </li>{" "}
                       <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-30">
                         <a href="/list" itemProp="url">
                           Tra cứu dược liệu
@@ -70,37 +89,19 @@ const HeaderHome = () => {
                           Tra cứu theo bệnh
                         </a>
                       </li>{" "}
-                      <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-27">
-                        <a href="/list" itemProp="url">
-                          Tra cứu bài thuốc
-                        </a>
-                      </li>{" "}
-                      <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-49190">
-                        <a href="/list" itemProp="url">
-                          Tra cứu vị thuốc
-                        </a>
-                      </li>
                     </ul>
                   </li>
                   <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-17">
-                    <a itemProp="url">Tin tức</a>
+                    <a href="/news" itemProp="url">
+                      Tin tức
+                    </a>
                     <ul className="sub-menu">
                       {" "}
                       <li className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12">
-                        <a href="/list" itemProp="url">
+                        <a href="/news" itemProp="url">
                           Bản tin dược liệu
                         </a>
                       </li>{" "}
-                      <li className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-14">
-                        <a href="/list" itemProp="url">
-                          Nghiên cứu khoa học
-                        </a>
-                      </li>{" "}
-                      <li className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-15">
-                        <a href="/list" itemProp="url">
-                          Phát triển dược liệu
-                        </a>
-                      </li>
                     </ul>
                   </li>
                   <li className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-29409">
@@ -108,9 +109,64 @@ const HeaderHome = () => {
                       Video
                     </a>
                   </li>
-                  <li className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013">
-                    <a href="/list" itemProp="url">
-                      Chuyên gia dược liệu
+
+                  <li
+                    id="menu-item-29013"
+                    className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                  >
+                    <a itemProp="url">
+                      <span itemProp="name">
+                        {" "}
+                        {loggedIn && user && <>Xin chào, {user.name}</>}
+                      </span>
+                    </a>
+                  </li>
+
+                  <li
+                    id="menu-item-29013"
+                    className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                  >
+                    <a itemProp="url">
+                      <span onClick={() => navigate("/admin")} itemProp="name">
+                        {" "}
+                        {loggedIn && user && user.role === "admin" && (
+                          <>Quản lý</>
+                        )}
+                      </span>
+                    </a>
+                  </li>
+                  {/* <Menu.Item key="logout">
+                  <a onClick={handleLogout}>Đăng xuất</a>
+                </Menu.Item> */}
+                  <li
+                    id="menu-item-29013"
+                    className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                  >
+                    <a itemProp="url">
+                      <span onClick={handleLogout} itemProp="name">
+                        {" "}
+                        {loggedIn && user && <>Đăng xuất</>}
+                      </span>
+                    </a>
+                  </li>
+                  <li
+                    id="menu-item-29013"
+                    className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                  >
+                    <a itemProp="url">
+                      <span onClick={() => navigate("/signup")} itemProp="name">
+                        {!loggedIn && <>Đăng ký</>}
+                      </span>
+                    </a>
+                  </li>
+                  <li
+                    id="menu-item-29013"
+                    className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                  >
+                    <a itemProp="url">
+                      <span onClick={() => navigate("/login")} itemProp="name">
+                        {!loggedIn && <>Đăng nhập</>}
+                      </span>
                     </a>
                   </li>
                 </ul>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const { Header: AntdHeader } = Layout;
 
 const Header = () => {
   const { pathname } = useLocation();
   console.log(pathname === "/", "pathname");
+  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false); // State để kiểm tra đăng nhập
   const [user, setUser] = useState(null); // State để lưu thông tin người dùng
   useEffect(() => {
@@ -151,14 +152,6 @@ const Header = () => {
                   </a>
                   <ul className="sub-menu">
                     <li
-                      id="menu-item-29"
-                      className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29"
-                    >
-                      <a href="/list" itemProp="url">
-                        <span itemProp="name">Danh lục cây thuốc</span>
-                      </a>
-                    </li>
-                    <li
                       id="menu-item-30"
                       className="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-18 current_page_item menu-item-30"
                     >
@@ -174,29 +167,13 @@ const Header = () => {
                         <span itemProp="name">Tra cứu theo bệnh</span>
                       </a>
                     </li>
-                    <li
-                      id="menu-item-27"
-                      className="menu-item menu-item-type-post_type menu-item-object-page menu-item-27"
-                    >
-                      <a href="/list" itemProp="url">
-                        <span itemProp="name">Tra cứu bài thuốc</span>
-                      </a>
-                    </li>
-                    <li
-                      id="menu-item-49190"
-                      className="menu-item menu-item-type-post_type menu-item-object-page menu-item-49190"
-                    >
-                      <a href="/list" itemProp="url">
-                        <span itemProp="name">Tra cứu vị thuốc</span>
-                      </a>
-                    </li>
                   </ul>
                 </li>
                 <li
                   id="menu-item-17"
                   className="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-17"
                 >
-                  <a itemProp="url">
+                  <a href="/news" itemProp="url">
                     <span itemProp="name">Tin tức</span>
                   </a>
                   <ul className="sub-menu">
@@ -204,24 +181,8 @@ const Header = () => {
                       id="menu-item-12"
                       className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12"
                     >
-                      <a href="/list" itemProp="url">
+                      <a href="/news" itemProp="url">
                         <span itemProp="name">Bản tin dược liệu</span>
-                      </a>
-                    </li>
-                    <li
-                      id="menu-item-14"
-                      className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-14"
-                    >
-                      <a href="/list" itemProp="url">
-                        <span itemProp="name">Nghiên cứu khoa học</span>
-                      </a>
-                    </li>
-                    <li
-                      id="menu-item-15"
-                      className="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-15"
-                    >
-                      <a href="/list" itemProp="url">
-                        <span itemProp="name">Phát triển dược liệu</span>
                       </a>
                     </li>
                   </ul>
@@ -234,12 +195,64 @@ const Header = () => {
                     <span itemProp="name">Video</span>
                   </a>
                 </li>
+
                 <li
                   id="menu-item-29013"
                   className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
                 >
-                  <a href="/list" itemProp="url">
-                    <span itemProp="name">Chuyên gia dược liệu</span>
+                  <a itemProp="url">
+                    <span itemProp="name">
+                      {" "}
+                      {loggedIn && user && <>Xin chào, {user.name}</>}
+                    </span>
+                  </a>
+                </li>
+
+                <li
+                  id="menu-item-29013"
+                  className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                >
+                  <a itemProp="url">
+                    <span onClick={() => navigate("/admin")} itemProp="name">
+                      {" "}
+                      {loggedIn && user && user.role === "admin" && (
+                        <>Quản lý</>
+                      )}
+                    </span>
+                  </a>
+                </li>
+                {/* <Menu.Item key="logout">
+                  <a onClick={handleLogout}>Đăng xuất</a>
+                </Menu.Item> */}
+                <li
+                  id="menu-item-29013"
+                  className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                >
+                  <a itemProp="url">
+                    <span onClick={handleLogout} itemProp="name">
+                      {" "}
+                      {loggedIn && user && <>Đăng xuất</>}
+                    </span>
+                  </a>
+                </li>
+                <li
+                  id="menu-item-29013"
+                  className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                >
+                  <a itemProp="url">
+                    <span onClick={() => navigate("/signup")} itemProp="name">
+                      {!loggedIn && <>Đăng ký</>}
+                    </span>
+                  </a>
+                </li>
+                <li
+                  id="menu-item-29013"
+                  className="menu-item menu-item-type-post_type menu-item-object-page menu-item-29013"
+                >
+                  <a itemProp="url">
+                    <span onClick={() => navigate("/login")} itemProp="name">
+                      {!loggedIn && <>Đăng nhập</>}
+                    </span>
                   </a>
                 </li>
               </ul>

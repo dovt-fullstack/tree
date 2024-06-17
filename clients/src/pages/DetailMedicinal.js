@@ -96,7 +96,19 @@ const MedicinalDetail = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-
+  const [loggedIn, setLoggedIn] = useState(false); // State để kiểm tra đăng nhập
+  const [user, setUser] = useState(null); // State để lưu thông tin người dùng
+  useEffect(() => {
+    // Kiểm tra xem có thông tin người dùng trong localStorage không
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      // Nếu có, cập nhật state loggedIn và user
+      const parsedUserData = JSON.parse(userData);
+      setLoggedIn(true);
+      setUser(parsedUserData.user);
+    }
+    console.log(user);
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewComment({ ...newComment, [name]: value });
@@ -249,13 +261,19 @@ const MedicinalDetail = () => {
               />
             </div>
             <div className="CommentList__add">
-              <Button
-                type="primary"
-                onClick={handleAddComment}
-                style={{ marginRight: "1em" }}
-              >
-                Bình luận
-              </Button>
+              {loggedIn ? (
+                <Button
+                  type="primary"
+                  onClick={handleAddComment}
+                  style={{ marginRight: "1em" }}
+                >
+                  Bình luận
+                </Button>
+              ) : (
+                <Button type="primary" disabled style={{ marginRight: "1em" }}>
+                  Bạn cần đăng nhập để bình luận
+                </Button>
+              )}{" "}
               {parentIdSearch && parentIdSearch != "" && (
                 <Button
                   type="primary"
