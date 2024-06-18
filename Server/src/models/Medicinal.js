@@ -50,6 +50,12 @@ const medicinalSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  cc1: {
+    type: String,
+  },
+  cc2: {
+    type: String,
+  },
   comment2: [
     {
       type: mongoose.Schema.Types.ObjectId,

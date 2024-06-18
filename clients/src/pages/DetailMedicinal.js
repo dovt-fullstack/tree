@@ -145,24 +145,6 @@ const MedicinalDetail = () => {
           padding: "0 50px",
           marginTop: "25px",
           backgroundColor: "white",
-          justifyContent: "center",
-        }}
-      >
-        <Breadcrumb style={{ marginBottom: "16px" }}>
-          <Breadcrumb.Item>
-            <Link to="/">Trang chủ</Link>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <Link to="/list">Dược liệu</Link>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{medicinal.name}</Breadcrumb.Item>
-        </Breadcrumb>
-      </Content>
-      <Content
-        style={{
-          padding: "0 50px",
-          marginTop: "25px",
-          backgroundColor: "white",
         }}
       >
         <h1 style={{ textAlign: "center" }}>
@@ -229,6 +211,21 @@ const MedicinalDetail = () => {
               Bộ phận dùng:
             </span>
             {medicinal.usedPart}
+          </Typography.Paragraph>
+          <Divider />
+          <Typography.Paragraph>
+            <span style={{ fontWeight: "bold", marginRight: "3px" }}>
+              Thành phần hóa học:
+            </span>
+            {medicinal.cc1}
+          </Typography.Paragraph>
+
+          <Divider />
+          <Typography.Paragraph>
+            <span style={{ fontWeight: "bold", marginRight: "3px" }}>
+              Tính vị:
+            </span>
+            {medicinal.cc2}
           </Typography.Paragraph>
         </Card>
       </Content>

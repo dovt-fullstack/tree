@@ -1,13 +1,4 @@
-import {
-  Button,
-  Drawer,
-  Form,
-  Input,
-  Pagination,
-  Select,
-  Table,
-  Tag,
-} from "antd";
+import { Button, Drawer, Form, Input, Pagination, Select, Table, Tag } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
@@ -20,14 +11,18 @@ const { Option } = Select;
 const ManagerTree = () => {
   const [dataTree, setDataTree] = useState([]);
   const [searchParams] = useSearchParams();
+  const idTree = searchParams.get("idTree");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(1);
-  const idTree = searchParams.get("idTree");
   const [form] = Form.useForm();
   const [dataTreeId, setDataTreeId] = useState();
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState();
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
   useEffect(() => {
     const handelFetch = async () => {
       const { data } = await axios.get(
@@ -41,14 +36,10 @@ const ManagerTree = () => {
   }, [idTree]);
   const handelFetch = async () => {
     const { data } = await axios.get(
-      `http://localhost:8080/api/medicinal/getAll?page=${currentPage}&limit=${pageSize}`
+      "http://localhost:8080/api/disease/getAll"
     );
     setCategories(data.data);
     console.log(data, "c");
-  };
-  const handlePageChange = (page, pageSize) => {
-    setCurrentPage(page);
-    setPageSize(pageSize);
   };
   useEffect(() => {
     handelFetch();
@@ -59,7 +50,6 @@ const ManagerTree = () => {
     );
     setDataTree(data.data);
     setTotal(data.total);
-
     console.log(data);
   };
   console.log(dataTree, "dataTree");
@@ -79,6 +69,8 @@ const ManagerTree = () => {
       distribution: values?.phanbo,
       usedPart: values?.psudung,
       imageUrl: formData,
+      cc1 : values?.cc1,
+      cc2 : values?.cc2
     };
     await axios.post(
       "http://localhost:8080/api/edit-tree/" + idTree,
@@ -102,6 +94,9 @@ const ManagerTree = () => {
       sinhthai: dataTreeId?.ecology,
       phanbo: dataTreeId?.distribution,
       psudung: dataTreeId?.usedPart,
+      cc1: dataTreeId?.cc1,
+      cc2: dataTreeId?.cc2
+
     });
   const navigate = useNavigate();
   const onFinishFailed = (errorInfo) => {
@@ -359,6 +354,13 @@ const ManagerTree = () => {
           <Form.Item label="ảnh" name="image">
             <Input type="file" onChange={handleImageChange} />
           </Form.Item>
+
+          <Form.Item label="Thành phần hóa học" name="cc1">
+              <Input  name="cc1" />
+            </Form.Item>
+            <Form.Item label="Tính vị" name="cc2">
+              <Input  name="cc2" />
+            </Form.Item>
           <Form.Item>
             <div style={{ paddingLeft: "50px" }}>
               <img src={dataTreeId?.imageUrl} style={{ width: "70px" }} />
@@ -372,7 +374,7 @@ const ManagerTree = () => {
         </Form>
       </Drawer>
       <h2 style={{ padding: "10px" }}>Danh sách cây</h2>
-      <Table dataSource={dataSource} columns={columns} pagination={false} />
+      <Table dataSource={dataSource} columns={columns} pagination={false}/>
       <Pagination
         current={currentPage}
         pageSize={pageSize}

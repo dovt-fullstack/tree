@@ -21,6 +21,8 @@ const AddMedicinal = () => {
     usedPart: "",
     imageUrl: "",
     diseaseGroupId: "", // Đây là ID của nhóm bệnh
+    cc1 :"",
+    cc2 :"",
   });
 
   useEffect(() => {
@@ -153,7 +155,12 @@ const AddMedicinal = () => {
             <Form.Item label="Đường dẫn hình ảnh" name="imageUrl">
               <Input type="file" name="imageUrl" onChange={handleImageChange} />
             </Form.Item>
-
+            <Form.Item label="Thành phần hóa học" name="cc1">
+              <Input  onChange={handleChange} name="cc1" />
+            </Form.Item>
+            <Form.Item label="Tính vị" name="cc2">
+              <Input onChange={handleChange}  name="cc2" />
+            </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 Thêm mới
